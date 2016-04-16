@@ -1,0 +1,31 @@
+import {
+  TestComponentBuilder,
+  describe,
+  expect,
+  injectAsync,
+  it,
+} from 'angular2/testing';
+import {Component} from 'angular2/core';
+import {DOM} from 'angular2/src/platform/dom/dom_adapter';
+import {NotificationsPage} from './notifications';
+
+export function main() {
+  describe('notifications component', () => {
+    it('should work',
+      injectAsync([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+        return tcb.overrideTemplate(TestComponent, '<div><notifications></notifications></div>')
+          .createAsync(TestComponent)
+          .then((rootTC) => {
+            let notificationsDOMEl = rootTC.debugElement.children[0].nativeElement;
+
+            expect(DOM.querySelectorAll(notificationsDOMEl, 'h1')[0].textContent).toEqual('Howdy!');
+          });
+      }));
+  });
+}
+
+@Component({
+  selector: 'test-cmp',
+  directives: [NotificationsPage]
+})
+class TestComponent {}
